@@ -38,7 +38,7 @@ jobs:
           command: yarn build
       - run:
           name: Zip
-          command: cd build/$CIRCLE_SHA1 && zip -r ./build.zip .
+          command: cd build/$CIRCLE_SHA1 && zip -r ./build1f.zip .
       - aws-s3/copy:
           arguments:
           aws-access-key-id: AWS_ACCESS_KEY_ID
