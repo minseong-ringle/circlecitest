@@ -1,13 +1,12 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@4.1
-  # The S3 orb will setup the aws-cli and quickly copy or sync anything to s3.
-  # Orbs reduce the amount of configuration required for common tasks.
-  # See the orb documentation here: https://circleci.com/developer/orbs/orb/circleci/aws-s3
-  # NOTE: Environment variables containing the necessary secrets can be setup in the CircleCI UI
-  # See here https://circleci.com/docs/2.0/env-vars/#setting-an-environment-variable-in-a-project
-  aws-s3: circleci/aws-s3@2.0
+  aws-s3: circleci/aws-s3@2.0.0
+
+workflows: # Define a Workflow running the build job, then the deploy job
+   build:
+     jobs:
+       - build
 
 jobs:
   build:
@@ -34,4 +33,3 @@ jobs:
            arguments: | # Optional arguments
              --acl public-read \
              --cache-control "max-age=86400"
-           overwrite: true # default is false
