@@ -15,19 +15,12 @@ workflows: # Define a Workflow running the build job, then the deploy job
               only: /^v.*/
           requires:
             - build
-       - pause_workflow:
-          filters:
-            tags:
-              only: /^v.*/
-          requires:
-            - slack/on-hold
-          type: approval
        - notify:
           filters:
             tags:
               only: /^v.*/
           requires:
-            - pause_workflow
+            - slack/on-hold
 
 
 jobs:
