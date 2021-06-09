@@ -23,7 +23,7 @@ jobs:
           command: yarn build
       - run:
           name: Zip
-          command: mkdir build && cd build && mkdir $CIRCLE_SHA1 && cd $CIRCLE_SHA1 && zip -qq -r build.zip *
+          command: cd build/$CIRCLE_SHA1 && zip -qq -r build.zip *
       - aws-s3/sync:
            from: build.zip
            to: 's3://ringle-build/ringle-web/test-circleci/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/build.zip'
