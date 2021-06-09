@@ -32,4 +32,4 @@ jobs:
           aws-region: AWS_REGION_BLUE
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
           from: build.zip
-          to: 's3://ringle-build/ringle-web/test-circleci/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/build.zip'
+          to: 's3://circleci-buildtest/test-circleci/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/build.zip'
