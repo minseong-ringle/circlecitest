@@ -16,9 +16,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Update NPM
-          command: "sudo npm install -g yarn"
-      - run:
           name: Setup frozen-lockfile
           command: yarn install --frozen-lockfile
       - run:
