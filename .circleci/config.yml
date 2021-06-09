@@ -28,8 +28,8 @@ jobs:
           arguments: |
             --acl public-read \
             --cache-control "max-age=86400"
-          aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
-          aws-region: AWS_REGION_BLUE
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-region: ap-northeast-2
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: build.zip
           to: 's3://circleci-buildtest/test-circleci/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/build.zip'
