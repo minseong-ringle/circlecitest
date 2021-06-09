@@ -23,7 +23,7 @@ jobs:
           command: yarn build
       - run:
           name: Zip
-          command: cd build/$CIRCLE_SHA1 && zip -qq -r build.zip *
+          command: cd build/$CIRCLE_SHA1 && zip -r ./build.zip .
       - aws-s3/sync:
           arguments: |
             --acl public-read \
