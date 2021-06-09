@@ -31,5 +31,5 @@ jobs:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          from: build.zip
+          from: ~/repo/app/build/$CIRCLE_SHA1/build.zip
           to: 's3://circleci-buildtest/test-circleci/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/build.zip'
