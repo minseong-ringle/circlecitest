@@ -25,7 +25,7 @@ jobs:
           name: Zip
           command: cd build/$CIRCLE_SHA1 && zip -r ./build.zip .
       - aws-s3/copy:
-          arguments: '--dryrun'
+          arguments:
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-region: AWS_REGION
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
