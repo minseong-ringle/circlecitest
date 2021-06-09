@@ -25,8 +25,11 @@ jobs:
           name: Zip
           command: cd build/$CIRCLE_SHA1 && zip -qq -r build.zip *
       - aws-s3/sync:
-           from: build.zip
-           to: 's3://ringle-build/ringle-web/test-circleci/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/build.zip'
-           arguments: | # Optional arguments
-             --acl public-read \
-             --cache-control "max-age=86400"
+          arguments: |
+            --acl public-read \
+            --cache-control "max-age=86400"
+          aws-access-key-id: AWS_ACCESS_KEY_ID_BLUE
+          aws-region: AWS_REGION_BLUE
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY_BLUE
+          from: build.zip
+          to: 's3://ringle-build/ringle-web/test-circleci/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/build.zip'
