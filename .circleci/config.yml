@@ -14,7 +14,7 @@ workflows: # Define a Workflow running the build job, then the deploy job
             tags:
               only: /^v.*/
           requires:
-            - test
+            - build
        - pause_workflow:
           filters:
             tags:
@@ -22,7 +22,7 @@ workflows: # Define a Workflow running the build job, then the deploy job
           requires:
             - slack/on-hold
           type: approval
-       - deploy:
+       - notify:
           filters:
             tags:
               only: /^v.*/
@@ -43,11 +43,6 @@ jobs:
       - run:
           name: Build
           command: yarn build
-  deploy:
-    working_directory: ~/repo/app
-    docker:
-      - image: circleci/node:15
-    steps:
       - run:
           name: Zip
           command: cd build/$CIRCLE_SHA1 && zip -r ./build.zip .
@@ -58,6 +53,11 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ~/repo/app/build/$CIRCLE_SHA1/build.zip
           to: 's3://circleci-buildtest/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/'
+  notify:
+    working_directory: ~/repo/app
+    docker:
+      - image: 'cimg/base:stable'
+    steps:
       - slack/notify:
           event: fail
           template: basic_fail_1
