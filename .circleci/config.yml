@@ -2,11 +2,33 @@ version: 2.1
 
 orbs:
   aws-s3: circleci/aws-s3@2.0.0
+  slack: circleci/slack@4.4.2
 
 workflows: # Define a Workflow running the build job, then the deploy job
    build:
      jobs:
        - build
+       - slack/on-hold:
+          context: slack-secrets
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - test
+       - pause_workflow:
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - slack/on-hold
+          type: approval
+       - deploy:
+          filters:
+            tags:
+              only: /^v.*/
+          requires:
+            - pause_workflow
+
 
 jobs:
   build:
@@ -21,6 +43,11 @@ jobs:
       - run:
           name: Build
           command: yarn build
+  deploy:
+    working_directory: ~/repo/app
+    docker:
+      - image: circleci/node:15
+    steps:
       - run:
           name: Zip
           command: cd build/$CIRCLE_SHA1 && zip -r ./build.zip .
@@ -31,3 +58,9 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ~/repo/app/build/$CIRCLE_SHA1/build.zip
           to: 's3://circleci-buildtest/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/'
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: basic_success_1
