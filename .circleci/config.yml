@@ -8,19 +8,6 @@ workflows: # Define a Workflow running the build job, then the deploy job
    build:
      jobs:
        - build
-       - slack/on-hold:
-          context: slack-secrets
-          filters:
-            tags:
-              only: /^v.*/
-          requires:
-            - build
-       - notify:
-          filters:
-            tags:
-              only: /^v.*/
-          requires:
-            - slack/on-hold
 
 
 jobs:
@@ -46,11 +33,6 @@ jobs:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           from: ~/repo/app/build/$CIRCLE_SHA1/build.zip
           to: 's3://circleci-buildtest/build/${CIRCLE_BRANCH}/$CIRCLE_SHA1/'
-  notify:
-    working_directory: ~/repo/app
-    docker:
-      - image: 'cimg/base:stable'
-    steps:
       - slack/notify:
           event: fail
           template: basic_fail_1
